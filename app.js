@@ -8,7 +8,7 @@ const path = require('path');
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join('../simpleAdminPanel/', 'build')));
+app.use(express.static(path.join('../simpleAdminPanel', 'build')));
 
 const mc = mysql.createConnection({
     host: '127.0.0.1',
