@@ -6,9 +6,7 @@ const mysql = require('mysql');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
 
 const mc = mysql.createConnection({
     host: 'localhost',
@@ -94,9 +92,8 @@ app.post('/groupUpdate', function (req, res) {
     });
 });
 
-app.listen(8080, function () {
+app.listen(8080, function () {  
     console.log('Node app is running on port 8080');
 });
 
-// allows "grunt dev" to create a development server with livereload
 module.exports = app;
