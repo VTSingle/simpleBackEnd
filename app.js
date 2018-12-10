@@ -25,6 +25,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/group', function (req, res) {
+    console.log("I HERE 2")
     mc.query('SELECT * FROM test.groups', function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'group list.' });
@@ -32,6 +33,7 @@ app.get('/group', function (req, res) {
 });
 
 app.get('/teachers', function (req, res) {
+    console.log("I HERE")
     mc.query('SELECT * FROM test.teachers', function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'teachers list.' });
