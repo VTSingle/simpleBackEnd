@@ -3,10 +3,12 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const path = require('path');
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join('../simpleAdminPanel/', 'build')));
 
 const mc = mysql.createConnection({
     host: '127.0.0.1',
@@ -25,7 +27,6 @@ app.get('/', function (req, res) {
 });
 
 app.get('/group', function (req, res) {
-    console.log("I HERE 2")
     mc.query('SELECT * FROM test.groups', function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'group list.' });
