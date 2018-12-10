@@ -10,6 +10,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join('../simpleAdminPanel', 'build')));
 
+const port = process.env.PORT || 5000;
+
 const mc = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
@@ -95,8 +97,8 @@ app.post('/groupUpdate', function (req, res) {
     });
 });
 
-app.listen(3000, function () {
-    console.log('Node app is running on port 3000');
+app.listen(port, function () {
+    console.log('Node app is running on port ' + port);
 });
 
 module.exports = app;
