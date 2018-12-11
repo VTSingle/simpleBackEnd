@@ -28,14 +28,14 @@ app.get('/', function (req, res) {
     });
 });
 
-app.get('/group', function (req, res) {
+app.get('/getGroup', function (req, res) {
     mc.query('SELECT * FROM test.groups', function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'group list.' });
     });
 });
 
-app.get('/teachers', function (req, res) {
+app.get('/getTeachers', function (req, res) {
     console.log("I HERE")
     mc.query('SELECT * FROM test.teachers', function (error, results, fields) {
         if (error) throw error;
@@ -43,7 +43,7 @@ app.get('/teachers', function (req, res) {
     });
 });
 
-app.post('/groupschedule', function (req, res) {
+app.post('/getGroupschedule', function (req, res) {
     let group_id = req.body.id;
     mc.query('SELECT * FROM test.groupsschedule where numbergroup='+group_id, function (error, results, fields) {
         if (error) throw error;
