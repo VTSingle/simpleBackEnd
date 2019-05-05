@@ -15,7 +15,7 @@ const port = process.env.PORT || 5000;
 const mc = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: 'makememinet',
+    password: '1111',
     database: 'cmpsdb'
 });
 
