@@ -15,8 +15,8 @@ const port = process.env.PORT || 5000;
 const mc = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '',
-    database: 'test'
+    password: 'makememinet',
+    database: 'cmpsdb'
 });
 
 mc.connect();
@@ -29,32 +29,40 @@ app.get('/', function (req, res) {
 });
 
 app.get('/getGroup', function (req, res) {
-    mc.query('SELECT * FROM test.groups', function (error, results, fields) {
+    mc.query('SELECT * FROM cmpsdb.groups', function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'group list.' });
     });
 });
 
 app.get('/getTeachers', function (req, res) {
-    console.log("I HERE")
-    mc.query('SELECT * FROM test.teachers', function (error, results, fields) {
+    console.log("I HERE");
+    mc.query('SELECT * FROM cmpsdb.teachers', function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'teachers list.' });
     });
 });
 
+app.get('/getUsers', function (req, res) {
+    console.log("I HERE getUsers");
+    mc.query('SELECT * FROM cmpsdb.users', function (error, results, fields) {
+        if (error) throw error;
+        return res.send({ error: false, articles: results, message: 'users list.' });
+    });
+});
+
 app.post('/getGroupschedule', function (req, res) {
     let group_id = req.body.id;
-    mc.query('SELECT * FROM test.groupsschedule where numbergroup='+group_id, function (error, results, fields) {
+    mc.query('SELECT * FROM cmpsdb.groupsschedule where numbergroup='+group_id, function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, articles: results, message: 'schedule list.' });
     });
 });
 
 app.post('/teachersUpdate', function (req, res) {
-    mc.query('TRUNCATE TABLE test.teachers', function (error, results, fields) {
+    mc.query('TRUNCATE TABLE cmpsdb.teachers', function (error, results, fields) {
         if (error) throw error;
-        var sql = "INSERT INTO test.teachers (name, avatar, position) VALUES (?,?,?)";
+        var sql = "INSERT INTO cmpsdb.teachers (name, avatar, position) VALUES (?,?,?)";
         for(var i = 0; i < req.body.data.length; i++) {
             console.log(req.body.data[i].name);
             mc.query(sql, [req.body.data[i].name, req.body.data[i].avatar, req.body.data[i].position], function (err, result) {
@@ -72,10 +80,19 @@ app.post('/newsUpdate', function (req, res) {
         });
 });
 
+app.post('/userDBUpdate', function (req, res) {
+    console.log(req.body);
+    var sql = "INSERT INTO users (first_name, last_name, email, instagram_link, telegram_link) VALUES (?,?,?,?,?)";
+    mc.query(sql, [req.body.first_name, req.body.last_name, req.body.email, req.body.instagram_link, req.body.telegram_link], function (err, results) {
+        if (err) throw err;
+        return res.send({ error: false, articles: results, message: 'user added.' });
+    });
+});
+
 app.post('/groupsUpdate', function (req, res) {
-    mc.query('TRUNCATE TABLE test.groups', function (error, results, fields) {
+    mc.query('TRUNCATE TABLE cmpsdb.groups', function (error, results, fields) {
         if (error) throw error;
-        var sql = "INSERT INTO test.groups (name) VALUES (?)";
+        var sql = "INSERT INTO cmpsdb.groups (name) VALUES (?)";
         for(var i = 0; i < req.body.data.length; i++) {
             mc.query(sql, [req.body.data[i].name], function (err, result) {
                 if (err) throw err;
@@ -86,9 +103,9 @@ app.post('/groupsUpdate', function (req, res) {
 
 app.post('/groupUpdate', function (req, res) {
     console.log("request", req.body.data);
-    mc.query('DELETE FROM test.groupsschedule WHERE numbergroup=' + req.body.data[0].numbergroup, function (error, results, fields) {
+    mc.query('DELETE FROM cmpsdb.groupsschedule WHERE numbergroup=' + req.body.data[0].numbergroup, function (error, results, fields) {
         if (error) {console.log(error); throw error};
-        var sql = "INSERT INTO test.groupsschedule (numbergroup, day, time, subject) VALUES (?,?,?,?)";
+        var sql = "INSERT INTO cmpsdb.groupsschedule (numbergroup, day, time, subject) VALUES (?,?,?,?)";
         for(var i = 0; i < req.body.data.length; i++) {
             mc.query(sql, [req.body.data[i].numbergroup, req.body.data[i].day, req.body.data[i].time, req.body.data[i].subject], function (err, result) {
                 if (err) throw err;
