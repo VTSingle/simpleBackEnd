@@ -16,6 +16,7 @@ const mc = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
     password: '1111',
+    //password: 'makememinet',
     database: 'cmpsdb'
 });
 
@@ -82,8 +83,8 @@ app.post('/newsUpdate', function (req, res) {
 
 app.post('/userDBUpdate', function (req, res) {
     console.log(req.body);
-    var sql = "INSERT INTO users (first_name, last_name, email, instagram_link, telegram_link) VALUES (?,?,?,?,?)";
-    mc.query(sql, [req.body.first_name, req.body.last_name, req.body.email, req.body.instagram_link, req.body.telegram_link], function (err, results) {
+    var sql = "INSERT INTO users (first_name, last_name, phone_number, email, instagram_link, telegram_link) VALUES (?,?,?,?,?,?)";
+    mc.query(sql, [req.body.first_name, req.body.last_name, req.body.phone_number, req.body.email, req.body.instagram_link, req.body.telegram_link], function (err, results) {
         if (err) throw err;
         return res.send({ error: false, articles: results, message: 'user added.' });
     });
@@ -121,3 +122,12 @@ app.use(express.static(path.join(__dirname,'../simpleAdminPanel',  'build')))
     .listen(port, () => console.log(`Listening on ${ port }`))
 
 module.exports = app;
+
+
+
+// app.use((err, request, response, next) => {
+//     // логирование ошибки, пока просто console.log
+//     console.log(err);
+//     response.status(500).send('Something broke!')
+// });
+// app.listen(7000);
